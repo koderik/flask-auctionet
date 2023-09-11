@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>LinkedIndek</title>
+    <link rel="stylesheet" href="../static/dist/css/output.css">
+
+</head>
+
+<body>
+        <section class="bg-white ">
+            <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
+                <div class="mx-auto max-w-screen-sm text-center mb-8 lg:mb-16">
+                    <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 ">Browse Brands</h2>
+                    <p class="font-light text-gray-500 lg:mb-16 sm:text-xl">Explore some of your favorite brands and
+                        their second hand products value and sales Statistics
+
+                    </p>
+                </div>
+                <div class="grid gap-8 mb-6 lg:mb-16 md:grid-cols-2">
+                    {% if brands %}
+                    {% for brand in brands %}
+                    <a href="{{ url_for('handle_brand_click', brand_id=brand['id']) }}" class="block">
+
+                        <div
+                            class="items-center bg-gray-50 rounded-lg shadow sm:flex">
+
+                            <img class="w-full rounded-lg sm:rounded-none sm:rounded-l-lg"
+                                src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
+                                alt="Jese Avatar">
+
+                            <div class="p-5">
+                                <h3 class="text-xl font-bold tracking-tight text-gray-900 ">
+                                    <p>{{brand["name"]}}</p>
+                                </h3>
+                                <span class="text-gray-500">Number of rows : {{brand["rows"]}}</span>
+
+                            </div>
+
+
+
+                        </div>
+                    </a>
+                    {% endfor %}
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/flowbite.min.js"></script>
+    <script defer src="/_vercel/insights/script.js"></script>
+</body>
+
+</html>
