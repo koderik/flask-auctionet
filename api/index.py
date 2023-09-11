@@ -45,13 +45,31 @@ def index():
         # for each table in database, create dict struct with table name and number of rows
         cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'")
         tables = cursor.fetchall()
+        print(tables)
         for i in range(len(tables)):
-            cursor.execute(f"SELECT COUNT(*) FROM {tables[i][0]}")
+            # select count of id from table
+            cursor.execute(f"SELECT COUNT(id) FROM {tables[i][0]}")
+            rows = cursor.fetchone()
+            #rows =[0]
+            # get random img url from an item in the table where img_url is not null
+            
+           
+            cursor.execute(f"SELECT img_url FROM {tables[i][0]} WHERE img_url IS NOT NULL ORDER BY RANDOM() LIMIT 1")
+            img_url = cursor.fetchone()
+
+            
+            
+            
+            # if table is empty, set img_url to None
             tables[i] = {
                 "name": tables[i][0].replace("_", " ").capitalize(),
-                "rows": cursor.fetchone()[0],
-                "id": tables[i][0]
+                "rows": rows[0],
+                "id": tables[i][0],
+                "img_url": img_url[0]
             }
+            # print name and img url
+            print(tables[i]["name"])
+            print(tables[i]["img_url"])
         cursor.close()
         connection.close()
         # for each table, set name to capital case on first letter and remove underscore and add space
@@ -66,7 +84,7 @@ def index():
     )
 
 
-@app.route("/<brand_id>", methods=["GET", "POST"])
+@app.route("/brand/<brand_id>", methods=["GET", "POST"])
 def handle_brand_click(brand_id):
     # create a dash dashboard with the data from the table with the name of the brand_id
     connection = connect_to_database()
