@@ -6,13 +6,12 @@ import plotly.graph_objs as go
 import pandas as pd
 
 
-CURRENT_BRAND_ID = "svenskt_tenn"
 
 app = Flask(__name__)
 
 # Get PostgreSQL configuration from environment variables
-from dotenv import load_dotenv
-load_dotenv(dotenv_path="./api/.env.local")
+#from dotenv import load_dotenv
+#load_dotenv(dotenv_path="./api/.env.local")
 
 
 db_config = {
@@ -159,6 +158,6 @@ def handle_brand_click(brand_id):
 
 if __name__ == "__main__":
     # try to connect to the database
-    app.run(debug=True)
+    #app.run(debug=True)
 
-    #app.run()
+    app.run()
