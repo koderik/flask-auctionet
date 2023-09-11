@@ -141,17 +141,14 @@ def handle_brand_click(brand_id):
 
 
     # Convert figures to JSON
-    plot_filenames = []
-    for i, fig in enumerate([fig1, fig2, fig3, fig4], 1):
-        filename = f"./api/static/plot_{brand_id}_{i}.html"
-        # create file at filename
-        os.makedirs(os.path.dirname(filename), exist_ok=True)
-        fig.write_html(filename, auto_open=False)
-        plot_filenames.append(filename)
+    raw_htmls = []
+    for fig in [fig1, fig2, fig3, fig4]:
+        raw_html = fig.to_html(full_html=False, include_plotlyjs='cdn')
+        raw_htmls.append(raw_html)
 
     brand_name = brand_id.replace("_", " ").capitalize()    
 
-    return render_template('brand.html', plots=plot_filenames, brand_name=brand_name)
+    return render_template('brand.html', plots=raw_htmls, brand_name=brand_name)
 
 
 
