@@ -86,6 +86,12 @@ def index():
 
 @app.route("/brand/<brand_id>", methods=["GET", "POST"])
 def handle_brand_click(brand_id):
+    # convert to correct öäå, %C3%A5=å, %C3%A4=ä, %C3%B6=ö
+    brand_id = brand_id.replace("%C3%A5", "å")
+    brand_id = brand_id.replace("%C3%A4", "ä")
+    brand_id = brand_id.replace("%C3%B6", "ö")
+
+
     # create a dash dashboard with the data from the table with the name of the brand_id
     connection = connect_to_database()
    
