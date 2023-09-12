@@ -111,8 +111,8 @@ def handle_brand_click(brand_id):
     entries = df.groupby(pd.Grouper(key='date', freq=time_freq)).agg({'price': 'count', 'value': 'count'})
     
     fig1 = go.Figure()
-    fig1.add_trace(go.Scatter(x=sales_volume.index, y=sales_volume['price'], mode='lines+markers', name='Price'))
-    fig1.add_trace(go.Scatter(x=sales_volume.index, y=sales_volume['value'], mode='lines+markers', name='Value'))
+    fig1.add_trace(go.Scatter(x=sales_volume.index, y=sales_volume['price'], mode='lines', name='Price'))
+    fig1.add_trace(go.Scatter(x=sales_volume.index, y=sales_volume['value'], mode='lines', name='Value'))
     # add a title
     fig1.update_layout(
         title_text=f'Sales Volume over Time (Grouped by {time_freq})',
@@ -121,12 +121,12 @@ def handle_brand_click(brand_id):
     )
     # add labels to the axes
     fig1.update_xaxes(title_text="Date")
-    fig1.update_yaxes(title_text="Sales Volume")
+    fig1.update_yaxes(title_text="Sales Volume (SEK)")
 
 
     fig2 = go.Figure()
-    fig2.add_trace(go.Scatter(x=sales_average.index, y=sales_average['price'], mode='lines+markers', name='Price'))
-    fig2.add_trace(go.Scatter(x=sales_average.index, y=sales_average['value'], mode='lines+markers', name='Value'))
+    fig2.add_trace(go.Scatter(x=sales_average.index, y=sales_average['price'], mode='lines', name='Price'))
+    fig2.add_trace(go.Scatter(x=sales_average.index, y=sales_average['value'], mode='lines', name='Value'))
     # add a title
     fig2.update_layout(
         title_text=f'Sales Average over Time (Grouped by {time_freq})',
@@ -139,7 +139,7 @@ def handle_brand_click(brand_id):
 
 
     fig3 = go.Figure()
-    fig3.add_trace(go.Scatter(x=entries.index, y=entries['price'], mode='lines+markers', name='Entries'))
+    fig3.add_trace(go.Scatter(x=entries.index, y=entries['price'], mode='lines', name='Entries'))
     # add a title
     fig3.update_layout(
         title_text=f'Entries over Time (Grouped by {time_freq})',
@@ -152,7 +152,7 @@ def handle_brand_click(brand_id):
 
 
     fig4 = go.Figure()
-    fig4.add_trace(go.Scatter(x=ratio.index, y=ratio['price/value'], mode='lines+markers', name='Price/Value'))
+    fig4.add_trace(go.Scatter(x=ratio.index, y=ratio['price/value'], mode='lines', name='Price/Value'))
     # add a title
     fig4.update_layout(
         title_text=f'Price/Value over Time (Grouped by {time_freq})',
