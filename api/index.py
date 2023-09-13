@@ -10,8 +10,8 @@ import pandas as pd
 app = Flask(__name__)
 
 # Get PostgreSQL configuration from environment variables
-# from dotenv import load_dotenv
-# load_dotenv(dotenv_path="./api/.env.local")
+#from dotenv import load_dotenv
+#load_dotenv(dotenv_path="./api/.env.local")
 
 
 db_config = {
@@ -84,7 +84,7 @@ def index():
     )
 
 
-@app.route("/brand/<brand_id>?time_freq=<time_freq>", methods=["GET", "POST"])
+@app.route("/brand/<brand_id>_time_freq_<time_freq>", methods=["GET", "POST"])
 def handle_brand_click(brand_id, time_freq):
     # convert to correct öäå, %C3%A5=å, %C3%A4=ä, %C3%B6=ö
     brand_id = brand_id.replace("%C3%A5", "å")
@@ -176,7 +176,7 @@ def handle_brand_click(brand_id, time_freq):
 
     brand_name = brand_id.replace("_", " ").capitalize()    
 
-    return render_template('brand.html', plots=raw_htmls, brand_name=brand_name, brand_id = brand_id, time_freq=time_freq)
+    return render_template('brand.html', plots=raw_htmls, brand_name=brand_name, brand_id=brand_id, time_freq=time_freq)
 
 
 
