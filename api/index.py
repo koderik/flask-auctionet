@@ -10,8 +10,8 @@ import pandas as pd
 app = Flask(__name__)
 
 # Get PostgreSQL configuration from environment variables
-#from dotenv import load_dotenv
-#load_dotenv(dotenv_path="./api/.env.local")
+# from dotenv import load_dotenv
+# load_dotenv(dotenv_path="./api/.env.local")
 
 
 db_config = {
@@ -84,8 +84,8 @@ def index():
     )
 
 
-@app.route("/brand/<brand_id>", methods=["GET", "POST"])
-def handle_brand_click(brand_id):
+@app.route("/brand/<brand_id>?time_freq=<time_freq>", methods=["GET", "POST"])
+def handle_brand_click(brand_id, time_freq):
     # convert to correct öäå, %C3%A5=å, %C3%A4=ä, %C3%B6=ö
     brand_id = brand_id.replace("%C3%A5", "å")
     brand_id = brand_id.replace("%C3%A4", "ä")
@@ -101,10 +101,11 @@ def handle_brand_click(brand_id):
     cursor.close()
     connection.close()
     
+    
     df['date'] = pd.to_datetime(df['date'], unit='s')
     df['price/value'] = df['price'] / df['value']
 
-    time_freq = 'M'  # Assuming weekly frequency
+    time_freq = time_freq.upper()
     sales_volume = df.groupby(pd.Grouper(key='date', freq=time_freq)).agg({'price': 'sum', 'value': 'sum'})
     sales_average = df.groupby(pd.Grouper(key='date', freq=time_freq)).agg({'price': 'mean', 'value': 'mean'})
     ratio = df.groupby(pd.Grouper(key='date', freq=time_freq)).agg({'price/value': 'mean'})
@@ -140,6 +141,7 @@ def handle_brand_click(brand_id):
 
     fig3 = go.Figure()
     fig3.add_trace(go.Scatter(x=entries.index, y=entries['price'], mode='lines', name='Entries'))
+    
     # add a title
     fig3.update_layout(
         title_text=f'Entries over Time (Grouped by {time_freq})',
@@ -154,10 +156,12 @@ def handle_brand_click(brand_id):
     fig4 = go.Figure()
     fig4.add_trace(go.Scatter(x=ratio.index, y=ratio['price/value'], mode='lines', name='Price/Value'))
     # add a title
+    # add selection between day, week, month, year
     fig4.update_layout(
         title_text=f'Price/Value over Time (Grouped by {time_freq})',
         xaxis_title="Date",
         yaxis_title="Price/Value",
+        
     )
     # add labels to the axes
     fig4.update_xaxes(title_text="Date")
@@ -172,13 +176,13 @@ def handle_brand_click(brand_id):
 
     brand_name = brand_id.replace("_", " ").capitalize()    
 
-    return render_template('brand.html', plots=raw_htmls, brand_name=brand_name)
+    return render_template('brand.html', plots=raw_htmls, brand_name=brand_name, brand_id = brand_id, time_freq=time_freq)
 
 
 
 
 if __name__ == "__main__":
     # try to connect to the database
-    #app.run(debug=True)
-
     app.run()
+
+    #app.run()

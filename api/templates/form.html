@@ -20,7 +20,7 @@
                 <div class="grid gap-8 mb-6 lg:mb-16 md:grid-cols-2">
                     {% if brands %}
                     {% for brand in brands %}
-                    <a href="{{ url_for('handle_brand_click', brand_id=brand['id']) }}" class="block">
+                    <a href="{{ url_for('handle_brand_click', brand_id=brand['id'], time_freq='M')}}" class="block">
 
                         <div
                             class="items-center bg-gray-50 rounded-lg shadow sm:flex">
